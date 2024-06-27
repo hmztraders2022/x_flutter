@@ -4,74 +4,110 @@ import 'package:beta_x/app/modules/products/views/products_view.dart';
 import 'package:beta_x/components/header_container.dart';
 import 'package:beta_x/widgets/box_small_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
-  const HomeView({super.key});
+  HomeView({super.key});
+  HomeController homeController = Get.put(HomeController());
+
+  final bool isPopExit = false;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        foregroundColor: Colors.transparent,
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
-        elevation: 0,
-        forceMaterialTransparency: true,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const HeaderContainer(),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              // height: 800,
-              transform: Matrix4.translationValues(0.0, -30.0, 0.0),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-              ),
-              child: Column(
-                children: [
-                  const SizedBox(height: 25),
-                  itemGrid(MediaQuery.of(context).size.width),
-                ],
-              ),
+    return Obx(() {
+      return PopScope(
+        canPop: homeController.isPopExit.value,
+        onPopInvoked: (didPop) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Tekan sekali lagi untuk keluar'),
             ),
-            const SizedBox(height: 10),
-            SizedBox(
-              height: 250,
-              child: Image.network(
-                'https://blog.ippon.fr/content/images/2023/09/RGFzaGF0YXJfRGV2ZWxvcGVyX092ZXJJdF9jb2xvcl9QR19zaGFkb3c-.png',
-                loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                  return const Text('Failed to load image');
-                },
-              ),
-            ),
-            Text(
-              'Helloo..... friend',
-              style: GoogleFonts.comicNeue(
-                textStyle: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 3,
+          );
+          homeController.changePopExit();
+        },
+        child: Scaffold(
+          extendBodyBehindAppBar: true,
+          appBar: AppBar(
+            foregroundColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
+            centerTitle: true,
+            elevation: 0,
+            forceMaterialTransparency: true,
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                const HeaderContainer(),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  // height: 800,
+                  transform: Matrix4.translationValues(0.0, -30.0, 0.0),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+                  ),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 25),
+                      itemGrid(MediaQuery.of(context).size.width),
+                    ],
+                  ),
                 ),
-              ),
+                const SizedBox(height: 10),
+                SizedBox(
+                  height: 250,
+                  child: Image.network(
+                    'https://blog.ippon.fr/content/images/2023/09/RGFzaGF0YXJfRGV2ZWxvcGVyX092ZXJJdF9jb2xvcl9QR19zaGFkb3c-.png',
+                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                      return const Text('Failed to load image');
+                    },
+                  ),
+                ),
+                Text(
+                  'Helloo..... friend',
+                  style: GoogleFonts.comicNeue(
+                    textStyle: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 3,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    backgroundColor: Colors.blueAccent,
+                  ),
+                  child: const Text(
+                    'Kembali',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 50),
+              ],
             ),
-            const SizedBox(height: 50),
-          ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 

@@ -18,7 +18,6 @@ class ProductsView extends GetView<ProductsController> {
       ),
       body: GestureDetector(
           onTap: () {
-            //here
             FocusManager.instance.primaryFocus?.unfocus();
           },
           child: SingleChildScrollView(
@@ -26,18 +25,18 @@ class ProductsView extends GetView<ProductsController> {
               padding: const EdgeInsets.all(10),
               child: Column(
                 children: [
-                  // ListTile(
-                  //   leading: Icon(Icons.ac_unit_sharp),
-                  //   title: Text('KONTOL'),
-                  //   subtitle: Text('TITIT'),
-                  //   trailing: Icon(Icons.accessibility_outlined),
-                  //   shape: RoundedRectangleBorder(
-                  //     side: BorderSide(color: Colors.black, width: 1),
-                  //     borderRadius: BorderRadius.circular(5),
-                  //   ),
-                  // ),
-                  Obx(
-                    () {
+                  GetBuilder<ProductsController>(
+                    init: ProductsController(),
+                    initState: (_) {
+                      productControl.getProductsFake();
+                    },
+                    builder: (builder) {
+                      if (productControl.isLoading.value) {
+                        return const Padding(
+                          padding: EdgeInsets.only(top: 30),
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                      }
                       return Column(
                         children: [
                           for (var item in productControl.productModel)
@@ -51,9 +50,9 @@ class ProductsView extends GetView<ProductsController> {
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                                trailing: Icon(Icons.accessibility_outlined),
+                                trailing: const Icon(Icons.accessibility_outlined),
                                 shape: RoundedRectangleBorder(
-                                  side: BorderSide(color: Colors.black, width: 1),
+                                  side: const BorderSide(color: Colors.black, width: 1),
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                               ),

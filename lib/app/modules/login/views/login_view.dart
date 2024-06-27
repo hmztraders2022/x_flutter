@@ -120,7 +120,7 @@ class LoginView extends GetView<LoginController> {
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
                                   // Navigate the user to the Home page
-                                  Get.to(() => const HomeView());
+                                  Get.off(() => HomeView());
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(content: Text('Please fill input')),
