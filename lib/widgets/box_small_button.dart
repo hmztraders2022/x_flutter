@@ -54,6 +54,9 @@ class BoxSmallButton extends StatelessWidget {
           const SizedBox(height: 5),
           Text(
             contentTitle,
+            maxLines: 2,
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
             style: GoogleFonts.roboto(color: Colors.black),
           ),
         ],

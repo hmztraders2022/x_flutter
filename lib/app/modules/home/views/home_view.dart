@@ -1,5 +1,7 @@
 import 'package:beta_x/app/modules/home/models/front_menu_model.dart';
 import 'package:beta_x/app/modules/login/views/login_view.dart';
+import 'package:beta_x/app/modules/mallproduct/views/mallproduct_view.dart';
+import 'package:beta_x/app/modules/manageSapi/views/manage_sapi_view.dart';
 import 'package:beta_x/app/modules/products/views/products_view.dart';
 import 'package:beta_x/components/header_container.dart';
 import 'package:beta_x/widgets/box_small_button.dart';
@@ -69,7 +71,12 @@ class HomeView extends GetView<HomeController> {
                       );
                     },
                     errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                      return const Text('Failed to load image');
+                      return Image.network(
+                        'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg',
+                        fit: BoxFit.cover,
+                        width: 200,
+                        height: 200,
+                      );
                     },
                   ),
                 ),
@@ -117,18 +124,18 @@ Widget itemGrid(double width) {
     FrontMenuModel(title: 'News', isActive: false, nameRoute: ProductsView(), contentIcon: Icons.newspaper),
     FrontMenuModel(title: 'Chart', isActive: false, nameRoute: ProductsView(), contentIcon: Icons.table_chart),
     FrontMenuModel(title: 'Money', isActive: false, nameRoute: ProductsView(), contentIcon: Icons.money),
-    FrontMenuModel(title: 'Data', isActive: false, nameRoute: ProductsView(), contentIcon: Icons.data_exploration),
-    FrontMenuModel(title: 'Camera', isActive: false, nameRoute: ProductsView(), contentIcon: Icons.camera),
+    FrontMenuModel(title: 'Mall Product', isActive: true, nameRoute: MallproductView(), contentIcon: Icons.production_quantity_limits),
+    FrontMenuModel(title: 'Manage Sapi', isActive: true, nameRoute: ManageSapiView(), contentIcon: Icons.dataset),
     FrontMenuModel(title: 'Settings', isActive: false, nameRoute: ProductsView(), contentIcon: Icons.settings),
     FrontMenuModel(title: 'Profile', isActive: false, nameRoute: ProductsView(), contentIcon: Icons.person),
-    FrontMenuModel(title: 'Prducts', isActive: true, nameRoute: ProductsView(), contentIcon: Icons.category),
+    FrontMenuModel(title: 'Product Category', isActive: true, nameRoute: ProductsView(), contentIcon: Icons.category),
     FrontMenuModel(title: 'Log out', isActive: false, nameRoute: ProductsView(), contentIcon: Icons.logout),
     FrontMenuModel(title: 'Log in', isActive: true, nameRoute: LoginView(), contentIcon: Icons.login),
   ];
 
   int count = frontMenuModel.length;
   const int itemsPerRow = 4;
-  const double ratio = 1 / 1;
+  const double ratio = 1 / 1.1;
   const double horizontalPadding = 0;
   final double calcHeight = ((width / itemsPerRow) - (horizontalPadding)) * (count / itemsPerRow).ceil() * (1 / ratio);
   return Container(
