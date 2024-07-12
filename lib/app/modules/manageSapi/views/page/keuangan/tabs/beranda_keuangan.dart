@@ -1,3 +1,4 @@
+import 'package:beta_x/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -35,7 +36,9 @@ class BerandaKeuanganView extends GetView<BerandaKeuanganController> {
             Row(
               children: [
                 buttonBerandaKeuangan(
-                  onPres: () {},
+                  onPres: () {
+                    Get.toNamed(Routes.pengeluaranKeuanganTambah);
+                  },
                   name: 'Data Baru',
                   contentIcon: Icons.add,
                 ),
@@ -61,43 +64,45 @@ class BerandaKeuanganView extends GetView<BerandaKeuanganController> {
                         fontWeight: FontWeight.w300,
                       ),
                     ),
-                    Material(
-                      elevation: 1.0,
-                      type: MaterialType.transparency,
-                      borderRadius: const BorderRadius.all(Radius.circular(6)),
-                      child: GetBuilder<BerandaKeuanganController>(
-                        init: BerandaKeuanganController(),
-                        builder: (_) {
-                          return Wrap(
-                            direction: Axis.horizontal,
-                            children: <Widget>[
-                              buttonFilter(
-                                nameButton: 'Semua Tahun',
-                                onPres: () {
-                                  berandaKeuanganController.getDataKeuanganByYear('all');
-                                },
-                              ),
-                              buttonFilter(
-                                nameButton: '2 Tahun',
-                                onPres: () {
-                                  berandaKeuanganController.getDataKeuanganByYear('2');
-                                },
-                              ),
-                              buttonFilter(
-                                nameButton: '4 Tahun',
-                                onPres: () {
-                                  berandaKeuanganController.getDataKeuanganByYear('4');
-                                },
-                              ),
-                              buttonFilter(
-                                nameButton: '6 Tahun',
-                                onPres: () {
-                                  berandaKeuanganController.getDataKeuanganByYear('6');
-                                },
-                              ),
-                            ],
-                          );
-                        },
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          GetBuilder<BerandaKeuanganController>(
+                            init: BerandaKeuanganController(),
+                            builder: (_) {
+                              return Wrap(
+                                direction: Axis.horizontal,
+                                children: <Widget>[
+                                  buttonFilter(
+                                    nameButton: 'Semua Tahun',
+                                    onPres: () {
+                                      berandaKeuanganController.getDataKeuanganByYear('all');
+                                    },
+                                  ),
+                                  buttonFilter(
+                                    nameButton: '2 Tahun',
+                                    onPres: () {
+                                      berandaKeuanganController.getDataKeuanganByYear('2');
+                                    },
+                                  ),
+                                  buttonFilter(
+                                    nameButton: '4 Tahun',
+                                    onPres: () {
+                                      berandaKeuanganController.getDataKeuanganByYear('4');
+                                    },
+                                  ),
+                                  buttonFilter(
+                                    nameButton: '6 Tahun',
+                                    onPres: () {
+                                      berandaKeuanganController.getDataKeuanganByYear('6');
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -167,7 +172,7 @@ class BerandaKeuanganView extends GetView<BerandaKeuanganController> {
                     ),
                   ),
                   Text(
-                    'Swipe/ scroll ke kiri',
+                    'Swipe/ scroll',
                     style: GoogleFonts.roboto(
                       color: Colors.black54,
                       fontSize: 12,

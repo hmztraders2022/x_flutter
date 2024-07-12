@@ -1,4 +1,5 @@
 import 'package:beta_x/app/modules/manageSapi/views/page/keuangan/pengeluaran_views.dart';
+import 'package:beta_x/app/modules/manageSapi/views/page/keuangan/tabs/components/tambah_baru_pengeluaran.dart';
 import 'package:get/get.dart';
 
 import '../modules/home/bindings/home_binding.dart';
@@ -63,6 +64,10 @@ class AppPages {
     GetPage(
       name: _Paths.pengeluaranKeuangan,
       page: () => PengeluaranKeuangan(),
+    ),
+    GetPage(
+      name: _Paths.pengeluaranKeuanganTambah,
+      page: () => TambahBaruPengeluaranView(),
     ),
   ];
 }

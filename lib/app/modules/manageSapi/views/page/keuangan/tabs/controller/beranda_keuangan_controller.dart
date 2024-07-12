@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../models/table_keuangan_model.dart';
 
@@ -8,8 +9,11 @@ class BerandaKeuanganController extends GetxController {
   final RxInt currentSortColumn = 0.obs;
 
   final RxList<TableKeuanganModelNew> listPengeluaran = <TableKeuanganModelNew>[].obs;
+  final RxList<TableKeuanganModelNew> listPengeluaranByYear = <TableKeuanganModelNew>[].obs;
+  final RxBool isListByYear = false.obs;
 
   void getDataKeuangan() {
+    isListByYear(false);
     listPengeluaran.clear();
     var listDataKeuangan = [
       {'tanggal': '2012-09-01', 'title': 'Pembelian test', 'isActive': 1, 'id': 1},
@@ -36,11 +40,55 @@ class BerandaKeuanganController extends GetxController {
     for (var item in dynamicData) {
       listPengeluaran.add(item);
     }
-    print(listPengeluaran);
     // update();
   }
 
   void getDataKeuanganByYear(String years) {
-    print(years);
+    isListByYear(true);
+    listPengeluaranByYear.clear();
+    var listTempPengeluaran = [];
+    for (var item in listPengeluaran) {
+      Map<String, dynamic> tempX = item.toJson();
+      DateTime inputDate = DateTime.parse(tempX['tanggal'].toString());
+      DateTime currentDate = DateTime.now();
+      if (years != 'all') {
+        bool checked = checkIfMoreThanYears(inputDate, currentDate, int.parse(years));
+        if (!checked) {
+          listTempPengeluaran.add(tempX);
+        }
+      } else {
+        listTempPengeluaran.add(tempX);
+      }
+    }
+    for (var item in listTempPengeluaran) {
+      TableKeuanganModelNew items = TableKeuanganModelNew.fromJson(item);
+      listPengeluaranByYear.add(items);
+    }
+    print(listPengeluaranByYear);
+    update();
+  }
+
+  bool checkIfMoreThanYears(DateTime date, DateTime currentDate, int years) {
+    int yearDifference = currentDate.year - date.year;
+    // Jika selisih tahun lebih dari years tahun, langsung kembalikan true
+    if (yearDifference > years) {
+      return true;
+    }
+
+    // Jika selisih tahun kurang dari years tahun, langsung kembalikan false
+    if (yearDifference < years) {
+      return false;
+    }
+
+    // Jika selisih tahun tepat years tahun, periksa bulan dan hari
+    if (yearDifference == years) {
+      if (currentDate.month > date.month) {
+        return true;
+      } else if (currentDate.month == date.month) {
+        return currentDate.day >= date.day;
+      }
+    }
+
+    return false;
   }
 }
