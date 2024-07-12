@@ -1,16 +1,19 @@
-import 'package:beta_x/widgets/reusable_grid_item.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:beta_x/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../controllers/manage_sapi_controller.dart';
 import '../models/child_menu.dart';
 import '../models/examp.sapi_model.dart';
+import '../widget/card_small_menu.dart';
+import '../widget/header_sapi.dart';
+import '../widget/list_tile_info.dart';
 
 class ManageSapiView extends GetView<ManageSapiController> {
-  ManageSapiView({Key? key}) : super(key: key);
+  ManageSapiView({super.key});
+
+  final ManageSapiController manageSapiController = Get.put(ManageSapiController());
 
   final List<ExampleImageSapiModel> imageTopSapi = [
     ExampleImageSapiModel(
@@ -22,9 +25,22 @@ class ManageSapiView extends GetView<ManageSapiController> {
   ];
 
   final List<ChildMenuSapiModel> childMenu = [
-    ChildMenuSapiModel(title: 'Manage Keuangan', isActive: false, nameRoute: ManageSapiView(), contentIcon: Icons.attach_money),
-    ChildMenuSapiModel(title: 'Manage Keuangan', isActive: false, nameRoute: ManageSapiView(), contentIcon: Icons.attach_money),
-    ChildMenuSapiModel(title: 'Manage Keuangan', isActive: false, nameRoute: ManageSapiView(), contentIcon: Icons.attach_money),
+    ChildMenuSapiModel(title: 'Pengeluaran', isActive: false, nameRoute: Routes.pengeluaranKeuangan, contentIcon: Icons.analytics_outlined),
+    ChildMenuSapiModel(title: 'Pemasukkan', isActive: false, nameRoute: Routes.pengeluaranKeuangan, contentIcon: Icons.trending_up),
+  ];
+
+  final List<ChildMenuSapiModel> childMenuFarm = [
+    ChildMenuSapiModel(title: 'Pembelian', isActive: false, nameRoute: Routes.pengeluaranKeuangan, contentIcon: Icons.shopping_bag_outlined),
+    ChildMenuSapiModel(
+        title: 'Penjualan', isActive: false, nameRoute: Routes.pengeluaranKeuangan, contentIcon: Icons.shopping_cart_checkout_outlined),
+    ChildMenuSapiModel(title: 'Kerugian', isActive: false, nameRoute: Routes.pengeluaranKeuangan, contentIcon: Icons.trending_down),
+    ChildMenuSapiModel(title: 'Aset', isActive: false, nameRoute: Routes.pengeluaranKeuangan, contentIcon: Icons.inventory_2_outlined),
+  ];
+
+  final List<ChildMenuSapiModel> childMenuAdmin = [
+    ChildMenuSapiModel(title: 'Info Baru', isActive: false, nameRoute: Routes.pengeluaranKeuangan, contentIcon: Icons.new_label_outlined),
+    ChildMenuSapiModel(title: 'Akun Baru', isActive: false, nameRoute: Routes.pengeluaranKeuangan, contentIcon: Icons.person_add_alt_1_outlined),
+    ChildMenuSapiModel(title: 'User List', isActive: false, nameRoute: Routes.pengeluaranKeuangan, contentIcon: Icons.person_2_outlined),
   ];
 
   @override
@@ -33,102 +49,138 @@ class ManageSapiView extends GetView<ManageSapiController> {
       backgroundColor: Colors.grey[50],
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Stack(
-              children: [
-                CarouselSlider(
-                  options: CarouselOptions(
-                    height: 250.0,
-                    viewportFraction: 1,
-                    autoPlay: true,
-                  ),
-                  items: imageTopSapi.map((i) {
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 250,
-                          decoration: const BoxDecoration(
-                            color: Colors.transparent,
-                          ),
-                          child: Image.network(
-                            i.image,
-                            fit: BoxFit.cover,
-                            loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return const SizedBox(
-                                height: 30.0,
-                                width: 30.0,
-                                child: Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                              );
-                            },
-                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                              return Image.network(
-                                'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg',
-                                fit: BoxFit.cover,
-                                width: 200,
-                                height: 200,
-                              );
-                            },
-                          ),
-                        );
-                      },
-                    );
-                  }).toList(),
-                ),
-                Positioned(
-                  bottom: 30,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Selamat Datang',
-                      style: GoogleFonts.roboto(
-                        fontSize: 30,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 10,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Di Manajemen Sapi AR Farm',
-                      style: GoogleFonts.roboto(
-                        fontSize: 18,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+            HeaderSapi(imageTopSapi: imageTopSapi),
+            ListMenuSapi(
+              childMenu: childMenu,
+              title: 'Keuangan',
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
+            ListMenuSapi(
+              childMenu: childMenuFarm,
+              title: 'Sapi',
+            ),
+            const SizedBox(height: 10),
+            ListMenuSapi(
+              childMenu: childMenuAdmin,
+              title: 'Super Admin',
+            ),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text('BACK SEMENTARA'),
+            ),
+            const SizedBox(height: 30),
             Container(
-              color: Colors.white,
-              height: 200,
-              child: reusableGridItem(
-                width: MediaQuery.of(context).size.width,
-                count: childMenu.length,
-                countPerRow: 4,
-                childBuilder: (buildContext, i) {
-                  return Text('okok');
-                },
-                leftRatio: 1,
-                rightRatio: 1,
+              padding: const EdgeInsets.all(8),
+              width: MediaQuery.of(context).size.width,
+              // height: 200,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.info_outline,
+                        color: Colors.black,
+                        size: 18,
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        'Informasi',
+                        style: GoogleFonts.roboto(
+                          color: Colors.black,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Divider(
+                    color: Colors.grey[300],
+                  ),
+                  const SizedBox(height: 15),
+                  GetBuilder(
+                    init: ManageSapiController(),
+                    initState: (_) {
+                      manageSapiController.getListInfo();
+                    },
+                    builder: (_) {
+                      return Column(
+                        children: [
+                          for (var item in manageSapiController.listInfo)
+                            listTileInfoSapi(
+                              contexts: context,
+                              idCard: item.idC,
+                              date: manageSapiController.changeDateToFormat(item.dateCreated.toString()),
+                              subtitle: item.subtitle,
+                              isActive: item.isActive,
+                              isExpired: item.isExpired,
+                            ),
+                        ],
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
-            Text(
+            const Text(
               'ManageSapiView is working',
               style: TextStyle(fontSize: 20),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ListMenuSapi extends GetView {
+  const ListMenuSapi({
+    super.key,
+    required this.childMenu,
+    required this.title,
+  });
+
+  final List<ChildMenuSapiModel> childMenu;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: GoogleFonts.roboto(
+              color: Colors.black,
+              fontSize: 14,
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            width: 70,
+            child: Divider(
+              color: Colors.grey[400],
+            ),
+          ),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                for (var item in childMenu) cardMenuSapi(title: item.title, contentIcon: item.contentIcon, nameRoute: item.nameRoute),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

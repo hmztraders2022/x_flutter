@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 class ChildMenuSapiModel {
   late String title;
   late bool isActive;
-  late Widget nameRoute;
+  late String nameRoute;
   late IconData contentIcon;
 
   ChildMenuSapiModel({

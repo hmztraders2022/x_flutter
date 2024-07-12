@@ -10,6 +10,7 @@ abstract class Routes {
   static const productByCategories = _Paths.productByCategories;
   static const detailProduct = _Paths.detailProduct;
   static const manageSapi = _Paths.manageSapi;
+  static const pengeluaranKeuangan = _Paths.pengeluaranKeuangan;
 }
 
 abstract class _Paths {
@@ -21,4 +22,5 @@ abstract class _Paths {
   static const productByCategories = '/productbycategories';
   static const detailProduct = '/detailProduct';
   static const manageSapi = '/manage-sapi';
+  static const pengeluaranKeuangan = '$manageSapi/keuangan/pengeluaran';
 }
