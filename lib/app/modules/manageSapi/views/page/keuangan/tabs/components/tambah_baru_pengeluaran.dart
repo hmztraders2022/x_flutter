@@ -1,11 +1,11 @@
 import 'package:beta_x/widgets/title_custom_appBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../../../../../widgets/text_style_custom.dart';
 import '../controller/beranda_keuangan_controller.dart';
 
 class TambahBaruPengeluaranView extends GetView<BerandaKeuanganController> {
@@ -17,6 +17,7 @@ class TambahBaruPengeluaranView extends GetView<BerandaKeuanganController> {
   TextEditingController titleController = TextEditingController();
   TextEditingController jumlahPengeluaran = TextEditingController();
   TextEditingController authorController = TextEditingController(text: 'Hamzah');
+  TextEditingController keterangan = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +35,14 @@ class TambahBaruPengeluaranView extends GetView<BerandaKeuanganController> {
         backgroundColor: Colors.grey[50],
         body: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                 child: Form(
                   key: _formKey,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       textFieldCustom(
@@ -48,6 +51,7 @@ class TambahBaruPengeluaranView extends GetView<BerandaKeuanganController> {
                         keyboardType: TextInputType.number,
                         icon: Icons.person,
                         readOnly: true,
+                        isTextarea: false,
                         inputFormatters: [],
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -63,6 +67,7 @@ class TambahBaruPengeluaranView extends GetView<BerandaKeuanganController> {
                         keyboardType: TextInputType.number,
                         icon: Icons.calendar_today,
                         readOnly: true,
+                        isTextarea: false,
                         inputFormatters: [],
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -78,10 +83,11 @@ class TambahBaruPengeluaranView extends GetView<BerandaKeuanganController> {
                         keyboardType: TextInputType.text,
                         icon: Icons.abc,
                         readOnly: false,
+                        isTextarea: false,
                         inputFormatters: [],
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Judul tidak boleh kosong!';
+                            return 'Nama pengeluaran tidak boleh kosong!';
                           }
                           return null;
                         },
@@ -93,6 +99,7 @@ class TambahBaruPengeluaranView extends GetView<BerandaKeuanganController> {
                         keyboardType: TextInputType.number,
                         icon: Icons.numbers,
                         readOnly: false,
+                        isTextarea: false,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly,
                         ],
@@ -102,6 +109,46 @@ class TambahBaruPengeluaranView extends GetView<BerandaKeuanganController> {
                           }
                           return null;
                         },
+                      ),
+                      const SizedBox(height: 10),
+                      textFieldCustom(
+                        controller: keterangan,
+                        label: 'Keterangan',
+                        keyboardType: TextInputType.multiline,
+                        icon: Icons.text_format,
+                        readOnly: false,
+                        isTextarea: true,
+                        inputFormatters: [],
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Keterangan tidak boleh kosong!';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            Get.snackbar('Sukses', 'Menambahkan data baru pengeluaran', backgroundColor: Colors.green);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Please fill input')),
+                            );
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          backgroundColor: Colors.blueAccent,
+                        ),
+                        child: textCustomStyle(
+                          textColor: Colors.white,
+                          fontSize: 14,
+                          text: 'Tambah',
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ],
                   ),
@@ -115,16 +162,6 @@ class TambahBaruPengeluaranView extends GetView<BerandaKeuanganController> {
   }
 }
 
-Widget labelInputCustom({required String label}) {
-  return Text(
-    label,
-    style: GoogleFonts.roboto(
-      fontSize: 14,
-      color: Colors.grey[900],
-    ),
-  );
-}
-
 Widget textFieldCustom({
   required TextEditingController controller,
   required String label,
@@ -133,6 +170,7 @@ Widget textFieldCustom({
   required TextInputType keyboardType,
   required List<TextInputFormatter> inputFormatters,
   required bool readOnly,
+  required bool isTextarea,
 }) {
   return TextFormField(
     readOnly: readOnly,
@@ -143,6 +181,7 @@ Widget textFieldCustom({
       fontSize: 14,
       color: Colors.black87,
     ),
+    textAlignVertical: TextAlignVertical.top,
     decoration: InputDecoration(
       labelText: label,
       labelStyle: const TextStyle(color: Colors.black45, fontSize: 14),
@@ -167,5 +206,7 @@ Widget textFieldCustom({
       ),
     ),
     validator: validator,
+    minLines: isTextarea ? 6 : null,
+    maxLines: isTextarea ? null : 1,
   );
 }

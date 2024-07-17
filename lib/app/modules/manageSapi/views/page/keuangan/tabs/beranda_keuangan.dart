@@ -1,8 +1,10 @@
 import 'package:beta_x/app/routes/app_pages.dart';
+import 'package:beta_x/widgets/btn_group_year_filter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../../../../widgets/title_tabs_custom.dart';
 import 'components/table_keuangan.dart';
 import 'controller/beranda_keuangan_controller.dart';
 
@@ -13,26 +15,39 @@ class BerandaKeuanganView extends GetView<BerandaKeuanganController> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> buttonListFilterYear = [
+      buttonFilter(
+        nameButton: 'Semua Tahun',
+        onPres: () {
+          berandaKeuanganController.getDataKeuanganByYear('all');
+        },
+      ),
+      buttonFilter(
+        nameButton: '2 Tahun',
+        onPres: () {
+          berandaKeuanganController.getDataKeuanganByYear('2');
+        },
+      ),
+      buttonFilter(
+        nameButton: '4 Tahun',
+        onPres: () {
+          berandaKeuanganController.getDataKeuanganByYear('4');
+        },
+      ),
+      buttonFilter(
+        nameButton: '6 Tahun',
+        onPres: () {
+          berandaKeuanganController.getDataKeuanganByYear('6');
+        },
+      ),
+    ];
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: Column(
           children: [
-            const SizedBox(height: 10),
-            Text(
-              'Beranda',
-              style: GoogleFonts.roboto(
-                color: Colors.black,
-                fontSize: 14,
-                fontWeight: FontWeight.w300,
-              ),
-            ),
-            SizedBox(
-              width: 70,
-              child: Divider(
-                color: Colors.grey[400],
-              ),
-            ),
+            titleTabsCustom(title: 'Beranda'),
             Row(
               children: [
                 buttonBerandaKeuangan(
@@ -45,69 +60,19 @@ class BerandaKeuanganView extends GetView<BerandaKeuanganController> {
               ],
             ),
             const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
+            btnGroupYearFilter(
+              context: context,
+              childListWidget: [
+                GetBuilder<BerandaKeuanganController>(
+                  init: BerandaKeuanganController(),
+                  builder: (_) {
+                    return Wrap(
+                      direction: Axis.horizontal,
+                      children: buttonListFilterYear,
+                    );
+                  },
                 ),
-                child: Column(
-                  children: [
-                    Text(
-                      'Filter data by Year',
-                      style: GoogleFonts.roboto(
-                        color: Colors.black,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w300,
-                      ),
-                    ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          GetBuilder<BerandaKeuanganController>(
-                            init: BerandaKeuanganController(),
-                            builder: (_) {
-                              return Wrap(
-                                direction: Axis.horizontal,
-                                children: <Widget>[
-                                  buttonFilter(
-                                    nameButton: 'Semua Tahun',
-                                    onPres: () {
-                                      berandaKeuanganController.getDataKeuanganByYear('all');
-                                    },
-                                  ),
-                                  buttonFilter(
-                                    nameButton: '2 Tahun',
-                                    onPres: () {
-                                      berandaKeuanganController.getDataKeuanganByYear('2');
-                                    },
-                                  ),
-                                  buttonFilter(
-                                    nameButton: '4 Tahun',
-                                    onPres: () {
-                                      berandaKeuanganController.getDataKeuanganByYear('4');
-                                    },
-                                  ),
-                                  buttonFilter(
-                                    nameButton: '6 Tahun',
-                                    onPres: () {
-                                      berandaKeuanganController.getDataKeuanganByYear('6');
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              ],
             ),
             const SizedBox(height: 5),
             Card(

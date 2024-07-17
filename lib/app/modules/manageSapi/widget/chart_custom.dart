@@ -16,6 +16,7 @@ Widget chartCustomExample({required BuildContext context, required List<GrafikMo
   return Scaffold(
     body: Center(
       child: SfCartesianChart(
+        backgroundColor: Colors.white,
         onTooltipRender: (TooltipArgs args) {
           int index = int.parse(args.pointIndex.toString());
           List<dynamic>? chartdata = args.dataPoints;

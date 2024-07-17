@@ -135,7 +135,7 @@ Widget itemGrid(double width) {
 
   int count = frontMenuModel.length;
   const int itemsPerRow = 4;
-  const double ratio = 1 / 1.1;
+  const double ratio = 1 / 1.2;
   const double horizontalPadding = 0;
   final double calcHeight = ((width / itemsPerRow) - (horizontalPadding)) * (count / itemsPerRow).ceil() * (1 / ratio);
   return Container(
